@@ -43,6 +43,7 @@ public:
     bool operator !=(const MyMatrix<T>&) throw(MyExcept);
     MyMatrix<T>& operator *(const MyMatrix<T>&) throw(MyExcept);
     MyMatrix<T>& operator *(const T&);
+    T& operator [](int,int) throw (MyExcept);
     friend std::ostream& operator << <T>(std::ostream&,const MyMatrix<T>&);
     friend std::istream& operator >> <T>(std::istream& ,MyMatrix<T>&);
 
@@ -408,6 +409,19 @@ MyMatrix<T> &MyMatrix<T>::operator *(const T &c)
         return *this;
 
 
+}
+
+template<typename T>
+T &MyMatrix<T>::operator [](int i, int j)
+{
+    if( (i<_end_i)&&(i>-1)&&(j<_end_j)&&(j>-1))
+    {
+        return element[i][j];
+    }
+    else
+    {
+        throw MyExcept("index error");
+    }
 }
 
 template<class T>
