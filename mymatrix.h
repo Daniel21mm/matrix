@@ -70,47 +70,65 @@ T MyMatrix<T>::scalar_result(T *a, T** b, int _size, int index)
 template<typename T>
 T** MyMatrix<T>::get_minor(T **m, int index, int size)
 {
-    T tmp[size-1][size-1];
+  //  T tmp[size-1][size-1];
+    T** tmp =new T*[size-1];
+    for(int i(0);i<size-1;i++)
+        tmp[i]=new T[size-1];
 
     for(int i(1);i<size;i++)
     {
-        for(int j(0);j<size;j++)
+        for(int j(0),in(0);j<size;j++)
         {
             if(j!=index)
             {
-                tmp[i-1][j]=m[i][j];
+
+                tmp[i-1][in]=m[i][j];
+                in++;
             }
 
         }
     }
+//    for(int i(0);i<size-1;i++)
+//    {
+//        for(int j(0);j<size-1;j++)
+//        {
+//            std::cout << tmp[i][j] << " ";
+//        }
+//        std::cout<<std::endl;
+//    }
     return tmp;
+    for(int i(0);i<size-1;i++)
+        delete [] tmp[size-1];
 
 }
 
 template<typename T>
 int MyMatrix<T>::steper(int base, int index)
 {
+    int step=base;
     for(int i(0);i<index;i++)
     {
-        base*=base;
+        step*=base;
     }
-    return base;
+    return step;
 
 }
 
 template<typename T>
 T MyMatrix<T>::det_minor(T **m, int size)
 {
+    T result=static_cast<T>(0);
     if(size==2)
     {
         return m[0][0]*m[1][1]-m[0][1]*m[1][0];
     }
     else
     {
-        T result=m[0][0]*det_minor(get_minor(m,0,size),size-1);
+        result=m[0][0]*det_minor(get_minor(m,0,size),size-1);
+
         for(int i(1);i<size;i++)
         {
-            result+=m[0][i]*steper(-1,i)*det_minor(get_minor(m,i,size),size-1);
+            result+=m[0][i]*steper(-1,i+1)*det_minor(get_minor(m,i,size),size-1);
         }
         return result;
     }
@@ -382,7 +400,7 @@ MyMatrix<T>& MyMatrix<T>::operator+(const MyMatrix<T> & m) throw (MyExcept)
     {
         for(int i(0);i<_end_i;i++)
         {
-            for(int j(0);i<_end_j;j++)
+            for(int j(0);j<_end_j;j++)
             {
                 element[i][j]+=m.element[i][j];
             }
@@ -402,7 +420,7 @@ MyMatrix<T>& MyMatrix<T>::operator-(const MyMatrix<T> & m) throw (MyExcept)
     {
         for(int i(0);i<_end_i;i++)
         {
-            for(int j(0);i<_end_j;j++)
+            for(int j(0);j<_end_j;j++)
             {
                 element[i][j]-=m.element[i][j];
             }
@@ -422,7 +440,7 @@ bool MyMatrix<T>::operator ==(const MyMatrix<T> & m) throw (MyExcept)
     {
         for(int i(0);i<_end_i;i++)
         {
-            for(int j(0);i<_end_j;j++)
+            for(int j(0);j<_end_j;j++)
             {
                 if(element[i][j]!=m.element[i][j])
                 {
@@ -445,7 +463,7 @@ bool MyMatrix<T>::operator !=(const MyMatrix<T> & m) throw (MyExcept)
     {
         for(int i(0);i<_end_i;i++)
         {
-            for(int j(0);i<_end_j;j++)
+            for(int j(0);j<_end_j;j++)
             {
                 if(element[i][j]!=m.element[i][j])
                 {
