@@ -70,7 +70,6 @@ T MyMatrix<T>::scalar_result(T *a, T** b, int _size, int index)
 template<typename T>
 T** MyMatrix<T>::get_minor(T **m, int index, int size)
 {
-  //  T tmp[size-1][size-1];
     T** tmp =new T*[size-1];
     for(int i(0);i<size-1;i++)
         tmp[i]=new T[size-1];
@@ -88,14 +87,7 @@ T** MyMatrix<T>::get_minor(T **m, int index, int size)
 
         }
     }
-//    for(int i(0);i<size-1;i++)
-//    {
-//        for(int j(0);j<size-1;j++)
-//        {
-//            std::cout << tmp[i][j] << " ";
-//        }
-//        std::cout<<std::endl;
-//    }
+
     return tmp;
     for(int i(0);i<size-1;i++)
         delete [] tmp[size-1];
