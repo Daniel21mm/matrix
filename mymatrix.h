@@ -58,10 +58,10 @@ public:
 template<typename T>
 T MyMatrix<T>::scalar_result(T *a, T** b, int _size, int index)
 {
-    T result=a[0]*b[index][0];
+    T result=a[0]*b[0][index];
     for(int i(1);i<_size;i++)
     {
-        result+=a[i]*b[index][i];
+        result+=a[i]*b[i][index];
     }
     return result;
 
@@ -464,13 +464,14 @@ bool MyMatrix<T>::operator !=(const MyMatrix<T> & m) throw (MyExcept)
 template<typename T>
 MyMatrix<T> MyMatrix<T>::operator *(const MyMatrix<T> &m) throw (MyExcept)
 {
+    MyMatrix<T> tmp(_end_i,m._end_j);
     if(_end_j!=m._end_i)
     {
         throw MyExcept("different sizes matrixs") ;
     }
     else
     {
-        MyMatrix<T> tmp(_end_i,m._end_j);
+
         for(int i(0);i<_end_i;i++)
         {
             for(int j(0);j<m._end_j;j++)
@@ -478,9 +479,12 @@ MyMatrix<T> MyMatrix<T>::operator *(const MyMatrix<T> &m) throw (MyExcept)
                 tmp.element[i][j]=scalar_result(element[i],m.element,_end_j,j);
             }
         }
+
         return tmp;
 
     }
+
+
 }
 
 template<typename T>
